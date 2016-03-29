@@ -1,4 +1,5 @@
-package IDataNode;
+package com.local.dfs.dataNode;
+
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
