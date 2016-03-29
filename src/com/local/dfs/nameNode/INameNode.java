@@ -1,4 +1,5 @@
-package INameNode;
+package com.local.dfs.nameNode;
+
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
