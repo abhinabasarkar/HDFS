@@ -37,12 +37,12 @@ public class DataNode implements IDataNode
 	private int dataNodePort, nameNodePort;					// port numbers for connection
 	private int blockReportInterval, heartbeatInterval;		// in seconds
 	private Registry reg;									// the rmi registry
-	private INameNode NNStub;									// the stub
+	private INameNode NNStub;								// stub for the NN
 	private String blockDir;								// directory where the data would be stored
 
 	// registry lookup strings
-	private static String NNString = "namenode";
-	private static String DNString = "datanode";
+	private static String NNString = "NameNode";
+	private static String DNString = "DataNode";
 	
 	// static status messages
 	static final int SUCCESS = 0;
@@ -58,6 +58,10 @@ public class DataNode implements IDataNode
 	}
 
 	
+	/**
+	 * main
+	 * @param args
+	 */
 	public static void main (String[] args)
 	{
 		String configFile = args[0];
@@ -235,7 +239,7 @@ public class DataNode implements IDataNode
 		ReadBlockResponse.Builder response = ReadBlockResponse.newBuilder();
 		ReadBlockRequest request = null;
 
-		byte[] data = new byte[blockSize * 1024];
+		byte[] data = new byte[blockSize * 1024 * 1024];
 		try 
 		{
 			request = ReadBlockRequest.parseFrom(inp);
