@@ -1,0 +1,4 @@
+NameNodeIP:10.42.0.1
+NameNodeService:NameNode
+DataNodeIP:10.42.0.2
+DataNodeService:DataNode
