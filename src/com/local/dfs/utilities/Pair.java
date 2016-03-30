@@ -27,7 +27,8 @@ public class Pair<L, R> {
 	    if (!(o instanceof Pair)) {
 	    	return false;
 	    }
-	    Pair pairo = (Pair) o;
+	    @SuppressWarnings("rawtypes")
+		Pair pairo = (Pair) o;
 	    return this.left.equals(pairo.getLeft()) &&
 	           this.right.equals(pairo.getRight());
 	}

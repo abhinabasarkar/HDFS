@@ -52,7 +52,7 @@ public class NameNode extends UnicastRemoteObject implements INameNode {
 		}
 
 		NameNode server = new NameNode();
-		server.loadNNConfig(args[0]).loadDNConfig(args[1]).launchServer();;
+		server.loadNNConfig(args[0]).loadDNConfig(args[1]).launchServer();
 	}
 
 	/**
@@ -101,6 +101,11 @@ public class NameNode extends UnicastRemoteObject implements INameNode {
 		return this;
 	}
 
+	/**
+	 * Load data node configuration and populate the data structure of active data nodes
+	 * @param configFile
+	 * @return
+	 */
 	private NameNode loadDNConfig(String configFile) {
 		
 		BufferedReader fr = null;
@@ -109,7 +114,11 @@ public class NameNode extends UnicastRemoteObject implements INameNode {
 		try {
 			fr = new BufferedReader(new FileReader(configFile));
 			while ((line = fr.readLine()) != null) {
-				
+				String id = StringUtility.getSegment(0, line, ":");
+				String ip = StringUtility.getSegment(1, line, ":");
+				int port = Integer.parseInt(StringUtility.getSegment(2, line, ":"));
+
+				this.activeDataNodes.put(id, new Pair<String, Integer>(ip, port));
 			}
 		}
 		catch (Exception e) {
@@ -119,9 +128,15 @@ public class NameNode extends UnicastRemoteObject implements INameNode {
 		return this;
 	}
 
+	/**
+	 * Create a new registry at the given port and bind the name node RMI object to the given name
+	 * @throws RemoteException
+	 * @throws AlreadyBoundException
+	 */
 	private void launchServer() throws RemoteException, AlreadyBoundException {
 		Registry registry = LocateRegistry.createRegistry(this.registryPort);
 		registry.bind(this.serviceName, this);
+		System.out.println("Name node bound to the object named - " + this.serviceName);
 	}
 
 	@Override
