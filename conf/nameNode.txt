@@ -1,6 +1,6 @@
 RegistryPort:1099
 BlockSize:33554432
 ReplicationFactor:3
-HeartBeatTimeOut:16
+HeartBeatTimeout:16000
 CurBlockNumber:0
 ServiceName:NameNode
