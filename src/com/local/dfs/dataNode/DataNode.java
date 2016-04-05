@@ -139,7 +139,7 @@ public class DataNode implements IDataNode
 
 		// for setting the block directory
 		line = br.readLine().trim();
-		this.blockDir = StringUtility.getSegment(1, line, ":") + "/";
+		this.blockDir = StringUtility.getSegment(1, line, ":");
 
 		// intervals
 		line = br.readLine().trim();
@@ -174,6 +174,7 @@ public class DataNode implements IDataNode
 	 * @throws RemoteException
 	 * @throws InterruptedException
 	 */
+	@SuppressWarnings("unused")
 	public void sendHeartBeat () throws RemoteException, InterruptedException
 	{		
 		// to be continued in infinite loop
@@ -196,6 +197,7 @@ public class DataNode implements IDataNode
 	 * @throws RemoteException
 	 * @throws InterruptedException
 	 */
+	@SuppressWarnings("unused")
 	public void sendBlockReport () throws RemoteException, InterruptedException
 	{
 		// continue infinitely
@@ -214,6 +216,7 @@ public class DataNode implements IDataNode
 
 			// add all the blocks in this DN
 			File curFolder = new File(this.blockDir);
+			
 			File[] files = curFolder.listFiles();
 
 			for (int i = 0; i < files.length; i++)
@@ -233,27 +236,31 @@ public class DataNode implements IDataNode
 	/* (non-Javadoc)
 	 * @see com.local.dfs.dataNode.IDataNode#readBlock(byte[])
 	 */
+	@SuppressWarnings("unused")
 	@Override
 	public byte[] readBlock(byte[] inp) throws RemoteException 
 	{
 		ReadBlockResponse.Builder response = ReadBlockResponse.newBuilder();
 		ReadBlockRequest request = null;
 
-		byte[] data = new byte[blockSize * 1024 * 1024];
 		try 
 		{
 			request = ReadBlockRequest.parseFrom(inp);
 			int blockNumber = request.getBlockNumber();
 
 			// now read the block
-			FileInputStream fin = new FileInputStream(blockDir + blockNumber);
+			File f = new File(blockDir + "/" + blockNumber);
+			FileInputStream fin = new FileInputStream(f);
+			
+			byte[] data = new byte[(int) f.length()];
 			int nBytes = fin.read (data);
 
+			fin.close();
+			
 			// prepare the response
 			response.addData(ByteString.copyFrom(data));
 			response.setStatus(DataNode.SUCCESS);
 
-			fin.close();
 		} 
 		catch (IOException e) 
 		{
@@ -288,7 +295,7 @@ public class DataNode implements IDataNode
 			ByteString data = request.getData(0);
 
 			// write to file
-			FileOutputStream fout = new FileOutputStream(blockDir + blockNumber);
+			FileOutputStream fout = new FileOutputStream(blockDir + "/" + blockNumber);
 			fout.write(data.toByteArray(), 0, data.size());
 			fout.close ();
 
@@ -356,4 +363,4 @@ public class DataNode implements IDataNode
 	}
 
 	
-}		// class
+}		// end class

@@ -279,7 +279,7 @@ public class Client {
 		// open file
 		OpenFileRequest.Builder openReq = OpenFileRequest.newBuilder();
 		openReq.setFileName(fileName);
-		openReq.setForRead(true);
+		openReq.setForRead(false);
 		
 		OpenFileResponse openResponse = OpenFileResponse.parseFrom(nnStub.openFile(openReq.build().toByteArray()));
 		
