@@ -200,21 +200,14 @@ public class Client {
 			// now read
 			BlockLocationRequest.Builder blockLocReq = BlockLocationRequest.newBuilder();
 
-			System.out.println("openResponse.getBlockNumsList(): " + openResponse.getBlockNumsList());  	// TODO remove
-
 			// add the block numbers to the blockLocRequest
 			for (int bNo : openResponse.getBlockNumsList())
 			{
 				blockLocReq.addBlockNums(bNo);
 			}
 
-			System.out.println ("blockReq.getBlockNumsList: " + blockLocReq.getBlockNumsList());		// TODO remove
 			BlockLocationResponse blockLocResp = 
 					BlockLocationResponse.parseFrom(nnStub.getBlockLocations(blockLocReq.build().toByteArray()));
-
-			System.out.println("Read block locations: " + blockLocResp.getBlockLocationsList().toString());		// TODO remove
-			System.out.println(blockLocResp.getStatus());				// TODO  remove
-			System.out.println("Block locations count: " + blockLocResp.getBlockLocationsCount());		// TODO remove
 
 			if (blockLocResp.getStatus() == SUCCESS)
 			{
@@ -247,14 +240,10 @@ public class Client {
 
 						if (rbResponse.getStatus() == SUCCESS)
 						{
-							System.out.println("ReadBlock response successful");	// TODO remove
-
 							ByteString byteString = rbResponse.getData(0);
 
 							// write to local output file
 							fw.write(byteString.toByteArray());
-
-							System.out.println("Written to file \"output\"");		// TODO remove
 						}
 						else
 						{

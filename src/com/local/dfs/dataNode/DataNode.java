@@ -320,7 +320,8 @@ public class DataNode implements IDataNode
 
 				WriteBlockRequest.Builder newRequest = WriteBlockRequest.newBuilder();
 				newRequest.setBlockInfo(newBlockInfo);
-
+				newRequest.addData(data);
+				
 				// registry lookup
 				Registry registry = LocateRegistry.getRegistry(newDN.getIp(), newDN.getPort());
 				IDataNode stub = (IDataNode) registry.lookup(DNString);
